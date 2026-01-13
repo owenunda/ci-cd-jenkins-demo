@@ -1,0 +1,1 @@
+console.log('Proyecto CI/CD iniciado correctamente.');
