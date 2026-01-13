@@ -1,6 +1,10 @@
 pipeline {
     agent any
     
+    options {
+      skipDefaultCheckout(true)
+    }
+
     environment {
         IMAGE_NAME = 'node-app'
         CONTAINER_NAME = 'node-app-container'
@@ -14,10 +18,20 @@ pipeline {
             }
         }
         
+        stage('Checkout (manual)') {
+            steps {
+              echo 'Clonando repo manualmente (sin checkout automático)...'
+              deleteDir()
+              sh 'git clone --depth 1 --branch master https://github.com/owenunda/ci-cd-jenkins-demo.git .'
+              sh 'git rev-parse --short HEAD'
+            }
+          }
+
+        
         stage('Build Docker Image') {
             steps {
                 echo 'Construyendo imagen Docker...'
-                sh 'docker build -t ${IMAGE_NAME}:latest .'
+                sh 'docker build -f dockerfile -t ${IMAGE_NAME}:latest .'
             }
         }
         
