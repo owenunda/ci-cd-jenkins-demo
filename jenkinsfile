@@ -1,0 +1,36 @@
+pipeline {
+  agent any
+  stages {
+    stage('Verificar codigo'){
+      steps{
+        echo 'Codigo descargado'
+        echo "Rama: ${env.BRANCH_NAME ?: 'local'}"
+      }
+    }
+    stage('Instalar dependencias'){
+      steps {
+        echo 'Instalando dependencias..'
+        sh 'npm install'
+      }
+    }
+    stage('Compilar typeSCrtrip'){
+      steps{
+        echo 'Compilando typeScript a JavaScript'
+        sh 'npm run build'
+      }
+    }
+    stage('Resultado'){
+      steps{
+        echo 'Build compkeado exitosamente'
+      }
+    }
+  }
+}
+/*
+pipeline: Todo va dentro de esto
+agent any: Usar cualquier "máquina" disponible (en este caso, Jenkins)
+stages: Los pasos del pipeline
+stage: Cada paso individual (tiene un nombre)
+steps: Las acciones dentro de cada paso
+sh: Ejecutar comando de terminal (sh = shell)
+*/
